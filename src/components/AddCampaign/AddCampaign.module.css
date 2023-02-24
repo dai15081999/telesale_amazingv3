@@ -1,0 +1,80 @@
+.createCampaign {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 9000000000;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-content: center;
+  background-color: rgba(71, 71, 71, 0.257);
+}
+
+.wrap {
+  padding: 15px;
+  width: 500px;
+  max-width: 500px;
+  border-radius: 10px;
+  background-color: var(--light);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top h5 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--blue);
+}
+
+.container{
+  padding: 15px;
+}
+
+.container h6 {
+  color: var(--dark-grey);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.container ul {
+  list-style: none;
+}
+
+.container li {
+  font-size: 14px;
+  color: var(--dark-grey);
+}
+
+.container select {
+  width: 100%;
+  background: var(--grey);
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding: 10px 36px 10px 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: var(--dark-grey);
+}
+
+.btn_add {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.btn_add button {
+  width: 120px;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  color: var(--light);
+  font-size: 15px;
+  margin: 0 8px;
+  padding: 8px 13px;
+  background-color: var(--blue);
+}

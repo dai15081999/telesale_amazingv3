@@ -1,0 +1,61 @@
+.form__login {
+  background-image: url("../../../assets/tele.jpg");
+  background-position: center;
+  background-size: cover;
+  padding: 5%;
+  min-height: 100vh;
+}
+
+.form__login h5 {
+  font-weight: bold;
+  color: var(--red);
+}
+
+.logindiv {
+  background-color: #00000000;
+  box-shadow: 5px 10px 50px #888888;
+  margin: auto;
+  padding: 15px;
+  width: 60%;
+  height: 90%;
+}
+
+.loginform {
+  width: 50%;
+  height: 70%;
+  position: absolute;
+  right: 10%;
+  bottom: 5%;
+}
+
+.loginform h6 {
+  color: var(--blue);
+}
+
+.loginh {
+  text-align: center;
+}
+
+.loginbtn {
+  background-color: var(--dark-blue);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  font-weight: bold;
+  padding: 11px 10px;
+}
+
+.info {
+  margin-top: 10%;
+  width: 30%;
+}
+
+.info h5 {
+  text-align: center;
+}
+
+.info h6 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--blue);
+}

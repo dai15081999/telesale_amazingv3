@@ -1,0 +1,15 @@
+.head__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 14px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background: linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232));
+  }
+  
+  .head__box h3 {
+    font-size: 17px;
+    color: white;
+    font-weight: bold;
+  }

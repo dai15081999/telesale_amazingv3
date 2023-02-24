@@ -1,0 +1,52 @@
+.brand {
+  width: 100%;
+  min-height: 100vh;
+  background: url("../../assets/bg.jpg");
+  display: grid;
+  place-content: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.wrap {
+  width: 340px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+.wrap h4 {
+  margin: -24px 16px 8px;
+  padding: 16px;
+  text-align: center;
+  color: white;
+  opacity: 1;
+  font-weight: bold;
+  background: linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232));
+  border-radius: 0.5rem;
+  box-shadow: rgb(0 0 0 / 14%) 0rem 0.25rem 1.25rem 0rem,
+    rgb(0 187 212 / 40%) 0rem 0.4375rem 0.625rem -0.312;
+}
+
+.wrap select {
+  width: 100%;
+  background: var(--grey);
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding: 10px 36px 10px 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.button {
+  width: 60%;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--blue);
+  margin: 10px auto;
+  color: white;
+  font-weight: bold;
+}

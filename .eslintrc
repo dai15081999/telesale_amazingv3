@@ -1,0 +1,57 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "commonjs": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "plugins": ["react", "prettier"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all",
+        "printWidth": 80,
+        "useTabs": false,
+        "endOfLine": "auto"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ],
+    "eqeqeq": "warn",
+    "array-bracket-newline": "error",
+    "arrow-spacing": "error",
+    "jsx-quotes": "warn",
+    "key-spacing": "warn",
+    "keyword-spacing": "warn",
+    // "newline-before-return": "warn",
+    "no-empty": "warn",
+    "newline-per-chained-call": "error",
+    "no-var": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "indent": ["off", 2],
+    "react/no-unescaped-entities": ["off"],
+    "react/display-name": ["off"],
+    "react/prop-types": ["off"]
+  }
+}
