@@ -33,6 +33,30 @@
   padding: 10px 36px 10px 16px;
   transition: all 0.3s ease;
   font-size: 14px;
+  color: var(--dark-grey);
+}
+
+.fieldx input {
+  width: 100%;
+  background: var(--grey);
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding: 10px 36px 10px 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.fieldx select {
+  width: 100%;
+  background: var(--grey);
+  border-radius: 5px;
+   color: var(--dark-grey);
+  border: none;
+  outline: none;
+  padding: 10px 36px 10px 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
 }
 
 .field select {
@@ -58,10 +82,12 @@ h5 {
   background: var(--grey);
   border-radius: 5px;
   border: none;
+  color: var(--dark-grey);
   outline: none;
   padding: 10px 36px 10px 16px;
   transition: all 0.3s ease;
   font-size: 14px;
+  font-family: bold;
   resize: none;
 }
 
@@ -78,14 +104,19 @@ h5 {
   margin-bottom: 5px;
   padding: none;
 }
-
+.fieldx label {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--dark-grey);
+  margin-bottom: 5px;
+  padding: none;
+}
 .buttons {
   display: flex;
   margin-top: 20px;
   width: 100%;
   justify-content: center;
 }
-
 
 .buttons button {
   outline: none;
@@ -99,4 +130,14 @@ h5 {
   text-transform: uppercase;
   font-weight: bold;
   width: 200px;
+}
+
+
+@media only screen and (max-width: 900px) {
+  .input__field {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+    align-items: center;
+  }
 }

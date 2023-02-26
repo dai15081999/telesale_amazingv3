@@ -1,4 +1,4 @@
-import { RingLoader } from "react-spinners";
+import { RingLoader } from 'react-spinners';
 
 export function Loading({ size, color }) {
   return (
@@ -6,8 +6,8 @@ export function Loading({ size, color }) {
       <RingLoader
         color={`${color}`}
         size={`${size}`}
-        aria-label="Loading Spinner"
-        data-testid="loader"
+        aria-label='Loading Spinner'
+        data-testid='loader'
       />
     </>
   );

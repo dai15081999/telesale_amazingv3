@@ -77,13 +77,18 @@
 @media only screen and (max-width: 900px) {
   .head_new {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     align-items: center;
     width: 100%;
     margin-top: 30px;
     border-bottom: 2px solid rgba(0, 162, 255, 0.247);
   }
-
+  .col1 {
+    display: none;
+  }
+  .col2 {
+    display: none;
+  }
   .head_new span {
     font-size: 9px;
     color: var(--dark-grey);
@@ -99,7 +104,7 @@
 
   .content_new {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     width: 100%;
     margin: 15px 0;
     align-items: center;
@@ -125,6 +130,16 @@
     background: linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232));
   }
 
+  .col1 {
+    display: none;
+  }
+  .col2 {
+    display: none;
+  }
+  .col3 {
+    display: none;
+  }
+
   .head__box h3 {
     font-size: 13px;
     color: white;
@@ -134,7 +149,11 @@
   .head__box .buttons {
     display: flex;
   }
-
+  .content_new span {
+    font-size: 12px;
+    width: 100%;
+    font-weight: 400;
+  }
   .btn {
     margin: 0 10px;
     padding: 5px 12px;
@@ -151,7 +170,7 @@
 
   .head_new {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     align-items: center;
     width: 100%;
     margin-top: 30px;
@@ -159,7 +178,7 @@
   }
 
   .head_new span {
-    font-size: 6px;
+    font-size: 12px;
     color: var(--dark-grey);
     font-weight: bold;
     padding-bottom: 5px;
@@ -172,17 +191,10 @@
 
   .content_new {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
     margin: 15px 0;
     align-items: center;
-  }
-
-  .content_new span {
-    font-size: 6px;
-    color: rgb(102, 187, 106);
-    width: 100%;
-    font-weight: 400;
   }
 
   .campaign select {

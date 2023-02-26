@@ -82,11 +82,28 @@ label {
   justify-content: center;
   margin-top: 6px;
 }
-.buttons button {
+button {
+  outline: none;
+  border: none;
+}
+
+.buttons .addbtn {
   margin: 5px 5px;
-  width: 40%;text-align: center;
+  width: 40%;
+  text-align: center;
   padding: 10px 12px;
-  background-color: var(--dark-blue);
+  background-color: var(--blue);
   color: white;
   border-radius: 5px;
+}
+
+.cancelbtn {
+  margin: 5px 5px;
+  width: 40%;
+  text-align: center;
+  padding: 10px 12px;
+  background-color: var(--blue);
+  color: white;
+  border-radius: 5px;
+  background-color: var(--red);
 }

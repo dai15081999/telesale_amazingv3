@@ -26,7 +26,7 @@
       {
         "tabWidth": 2,
         "semi": true,
-        "singleQuote": false,
+        "singleQuote": true,
         "trailingComma": "all",
         "printWidth": 80,
         "useTabs": false,
@@ -37,10 +37,10 @@
       "error",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
     ],
-    "eqeqeq": "warn",
+    "eqeqeq": ["warn", "smart"],
     "array-bracket-newline": "error",
     "arrow-spacing": "error",
-    "jsx-quotes": "warn",
+    "jsx-quotes": ["warn", "prefer-single"],
     "key-spacing": "warn",
     "keyword-spacing": "warn",
     // "newline-before-return": "warn",

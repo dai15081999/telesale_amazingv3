@@ -1,6 +1,6 @@
 export const formartDate = (date, options) => {
   const d = new Date(date);
-  const f = new Intl.DateTimeFormat("vi", {
+  const f = new Intl.DateTimeFormat('vi', {
     dateStyle: options,
   });
   return f.format(d);
@@ -18,7 +18,7 @@ export function toHoursAndMinutes(totalSeconds) {
   )}`;
 }
 function padTo2Digits(num) {
-  return num.toString().padStart(2, "0");
+  return num.toString().padStart(2, '0');
 }
 
 export const truncate = (text, startChars, endChars, maxLength) => {
@@ -26,7 +26,7 @@ export const truncate = (text, startChars, endChars, maxLength) => {
     let start = text.substring(0, startChars);
     let end = text.substring(text.length - endChars, text.length);
     while (start.length + end.length < maxLength) {
-      start = start + ".";
+      start = start + '.';
     }
     return start + end;
   }
@@ -35,7 +35,7 @@ export const truncate = (text, startChars, endChars, maxLength) => {
 
 export function formatNumber(number) {
   let result =
-    number.substr(0, 4) + "." + number.substr(4, 3) + "." + number.substr(7, 3);
+    number.substr(0, 4) + '.' + number.substr(4, 3) + '.' + number.substr(7, 3);
   return result;
 }
 
@@ -69,8 +69,8 @@ export function userNamegroup(names) {
 }
 
 export function formatMoney(total) {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
   }).format(total);
 }

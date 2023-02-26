@@ -1,59 +1,92 @@
 // Styles
-import styles from "./Campaign.module.css";
+import styles from './Campaign.module.css';
 // Icons
 // Context
-import { useAuth } from "../../../../context/AuthContext";
-import { useAxios } from "../../../../context/AxiosContex";
+import { useAuth } from '../../../../context/AuthContext';
+import { useAxios } from '../../../../context/AxiosContex';
 // Modules
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 // Functions
-import { userNamegroup } from "../../../../utils/functions";
+import { userNamegroup } from '../../../../utils/functions';
 // functions
-import { formartDate, formatNumber } from "../../../../utils/functions";
+import { formartDate, formatNumber } from '../../../../utils/functions';
 // icons
-import { AiOutlinePlus } from "react-icons/ai";
-import { CgDetailsMore } from "react-icons/cg";
+import { AiOutlinePlus } from 'react-icons/ai';
+import { CgDetailsMore } from 'react-icons/cg';
 // components
-import { AddCampaign } from "../../../../components/AddCampaign";
-import { Loading } from "../../../../components/Loading";
+import { AddCampaign } from '../../../../components/AddCampaign';
+import { Loading } from '../../../../components/Loading';
 // modules
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function Capaign() {
   // navigate
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const [campaignId, setCampaignId] = useState();
+  const [userID, setUserID] = useState();
+
   // sort data name
   const groupName = [];
   const groupNamed = [];
   // Apis link
-  const { getSource, getChannels, getLevelUser, getCustomers, getcampaigns } =
-    useAxios();
+  const {
+    getSource,
+    getChannels,
+    getLevelUser,
+    getCustomersStaff,
+    getcampaigns,
+    getCustomersByCapaignId,
+  } = useAxios();
   // data from authcontext
   const { user, brand } = useAuth();
   // get levels users
-  const { data: levels } = useQuery(["levels", brand], () =>
+  const { data: levels } = useQuery(['levels', brand], () =>
     getLevelUser(brand),
   );
-
   // get customers
-  const { data: customers, isLoading } = useQuery(["customers"], getCustomers);
+  const { data: customers, isLoading } = useQuery(
+    ['customers', brand, user?.UserName],
+    () => getCustomersStaff({ brandId: +brand, name: user?.UserName }),
+    {
+      enabled: !!brand,
+    },
+  );
+
+  const { data: ctm } = useQuery(
+    ['ctm', campaignId],
+    () => getCustomersByCapaignId(+campaignId),
+    {
+      enabled: !!campaignId,
+    },
+  );
   // get capaigns
-  const { data: campaigns } = useQuery(["campaigns"], getcampaigns);
+  const { data: campaigns } = useQuery(
+    ['campaigns', brand],
+    () => getcampaigns(+brand),
+    { enabled: !!brand },
+  );
+
   // get source
-  const { data: source } = useQuery(["source", brand], () => getSource(brand));
+  const { data: source } = useQuery(['source', brand], () => getSource(brand));
   // get channels
-  const { data: channels } = useQuery(["channels", brand], () =>
+  const { data: channels } = useQuery(['channels', brand], () =>
     getChannels(brand),
   );
+  //* Get campaign by id
 
   // ******* //
   // sort group name data
-
   customers?.forEach((elm) => {
     if (elm.firstName) {
-      if (elm.userId === +user?.Id) {
+      if (ctm) {
+        ctm?.forEach((ctmelm) => {
+          if (elm.id === ctmelm.id) {
+            groupName.push(elm);
+          }
+        });
+      } else {
         groupName.push(elm);
       }
     }
@@ -63,17 +96,29 @@ export default function Capaign() {
     groupNamed.push({ key: index, value });
   });
   // ******* //
+  function openModaladdCampaign() {
+    setOpenModal(true);
+  }
 
   return (
     <>
-      {openModal && <AddCampaign setOpenModal={setOpenModal} />}
+      {openModal && (
+        <AddCampaign
+          userID={userID}
+          campaigns={campaigns}
+          setOpenModal={setOpenModal}
+        />
+      )}
       <div className={styles.campaign}>
         <span>Chiến dịch: </span>
-        <select>
-          <option value="">Chọn chiến dịch</option>
+        <select onChange={(e) => setCampaignId(e.target.value)}>
+          <option value=''>Tất cả chiến dịch</option>
           {campaigns &&
             campaigns.map((elm, index) => (
-              <option key={index} value={elm.id}>
+              <option
+                key={index}
+                value={elm.id}
+              >
                 {elm.name}
               </option>
             ))}
@@ -92,11 +137,18 @@ export default function Capaign() {
               <h5>Level khách hàng:</h5>
               <select>
                 {levels &&
-                  levels.map((elm, index) => (
-                    <option key={index} value={elm.brandID}>
-                      {elm.name}
-                    </option>
-                  ))}
+                  levels.map((elm, index) => {
+                    if (elm?.name) {
+                      return (
+                        <option
+                          key={index}
+                          value={elm.brandID}
+                        >
+                          {elm.name}
+                        </option>
+                      );
+                    }
+                  })}
               </select>
             </div>
             {/* Kênh khách hàng */}
@@ -105,7 +157,10 @@ export default function Capaign() {
               <select>
                 {channels &&
                   channels.map((cn, index) => (
-                    <option key={index} value={cn.id}>
+                    <option
+                      key={index}
+                      value={cn.id}
+                    >
                       {cn.name}
                     </option>
                   ))}
@@ -116,11 +171,18 @@ export default function Capaign() {
               <h5>Nguồn khách hàng:</h5>
               <select>
                 {source &&
-                  source.map((sr, index) => (
-                    <option key={index} value={sr.id}>
-                      {sr.name}
-                    </option>
-                  ))}
+                  source.map((sr, index) => {
+                    if (sr?.name) {
+                      return (
+                        <option
+                          key={index}
+                          value={sr.id}
+                        >
+                          {sr.name}
+                        </option>
+                      );
+                    }
+                  })}
               </select>
             </div>
           </div>
@@ -133,18 +195,26 @@ export default function Capaign() {
           <div className={styles.table}>
             {isLoading ? (
               <div className={styles.loading__tb}>
-                <Loading size="90" color="red" />
+                <Loading
+                  size='90'
+                  color='red'
+                />
               </div>
             ) : (
               <>
                 <div className={styles.head_new}>
-                  <span>STT</span>
+                  <span className={styles.col1}>STT</span>
                   <span>Tên</span>
                   <span>Số điện thoại</span>
-                  <span>Ngày tham gia</span>
-                  <span style={{ textAlign: "center" }}>Nhân viên quản lý</span>
-                  <span style={{ textAlign: "center" }}>Thêm chiến dịch</span>
-                  <span style={{ textAlign: "center" }}>Xem chi tiết</span>
+                  <span className={styles.col2}>Ngày tham gia</span>
+                  <span
+                    className={styles.col3}
+                    style={{ textAlign: 'center' }}
+                  >
+                    Nhân viên quản lý
+                  </span>
+                  <span style={{ textAlign: 'center' }}>Thêm chiến dịch</span>
+                  <span style={{ textAlign: 'center' }}>Xem chi tiết</span>
                 </div>
                 {/* render user */}
                 <div className={styles.content__xx}>
@@ -164,32 +234,46 @@ export default function Capaign() {
                       <div key={index}>
                         <h5>{elm.key}</h5>
                         {elm.value.map((rl, index) => (
-                          <div key={index} className={styles.content_new}>
-                            <span style={{ color: "grey" }}>{index + 1}</span>
+                          <div
+                            key={index}
+                            className={styles.content_new}
+                          >
+                            <span
+                              className={styles.col1}
+                              style={{ color: 'grey' }}
+                            >
+                              {index + 1}
+                            </span>
                             <span>{rl.lastName}</span>
                             <span>{formatNumber(rl.phoneNumber)}</span>
-                            <span>{formartDate(rl.dateCreated, "full")}</span>
-                            <span style={{ textAlign: "center" }}>
+                            <span className={styles.col2}>
+                              {formartDate(rl.dateCreated, 'full')}
+                            </span>
+                            <span
+                              className={styles.col3}
+                              style={{ textAlign: 'center' }}
+                            >
                               {rl.userName}
                             </span>
                             <span
-                              onClick={() => setOpenModal(true)}
+                              onClick={openModaladdCampaign}
                               className={styles.call}
-                              style={{ cursor: "pointer" }}
+                              style={{ cursor: 'pointer' }}
                             >
                               <AiOutlinePlus
+                                onClick={() => setUserID(rl.id)}
                                 className={styles.btn__C}
-                                style={{ fontSize: "20px" }}
+                                style={{ fontSize: '20px' }}
                               />
                             </span>
                             <span
                               className={styles.call}
-                              style={{ cursor: "pointer" }}
+                              style={{ cursor: 'pointer' }}
                               onClick={() => navigate(`/staff/${rl.id}`)}
                             >
                               <CgDetailsMore
                                 className={styles.btn__C}
-                                style={{ fontSize: "20px" }}
+                                style={{ fontSize: '20px' }}
                               />
                             </span>
                           </div>

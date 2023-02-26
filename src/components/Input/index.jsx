@@ -1,5 +1,10 @@
-import { forwardRef } from "react";
+import { forwardRef } from 'react';
 
 export const Input = forwardRef(({ ...rest }, ref) => {
-  return <input {...rest} ref={ref} />;
+  return (
+    <input
+      {...rest}
+      ref={ref}
+    />
+  );
 });

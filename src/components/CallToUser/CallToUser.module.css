@@ -12,6 +12,10 @@
   transition: 0.4s;
 }
 
+button {
+  outline: none;
+  border: none;
+}
 
 .formmoal .form {
   background-color: white;
@@ -99,15 +103,20 @@
 .buttons {
   display: flex;
   justify-content: flex-end;
+  outline: none;
+  border: none;
   margin-top: 14px;
+  
 }
 
- .btn__calto {
+.btn__calto {
   margin: 15px 5px;
   padding: 10px 10px;
   background-color: var(--blue);
   color: white;
   border-radius: 5px;
+  outline: none;
+  border: none;
   outline: none;
   border: 1px solid var(--light);
 }

@@ -30,7 +30,7 @@
   color: var(--blue);
 }
 
-.container{
+.container {
   padding: 15px;
 }
 
@@ -67,7 +67,7 @@
   justify-content: center;
 }
 
-.btn_add button {
+.btn_add .addbtn {
   width: 120px;
   border: none;
   outline: none;
@@ -77,4 +77,16 @@
   margin: 0 8px;
   padding: 8px 13px;
   background-color: var(--blue);
+}
+
+.cancelbtn {
+  width: 120px;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  color: var(--light);
+  font-size: 15px;
+  margin: 0 8px;
+  padding: 8px 13px;
+  background-color: var(--red);
 }

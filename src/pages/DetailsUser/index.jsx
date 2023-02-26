@@ -1,32 +1,26 @@
 // styles
-import styles from "./DetailsUser.module.css";
+import styles from './DetailsUser.module.css';
 // components
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { History } from './History';
 // contexts
-import { useAxios } from "../../context/AxiosContex";
-import { useAuth } from "../../context/AuthContext";
-import { useSip } from "../../context/SipContext";
+import { useAxios } from '../../context/AxiosContex';
+import { useAuth } from '../../context/AuthContext';
+import { useSip } from '../../context/SipContext';
 // Modules
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  useParams,
-  useNavigate,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
-import { toast } from "react-hot-toast";
-import { Howl, Howler } from "howler";
+import 'react-datepicker/dist/react-datepicker.css';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams, useNavigate, Navigate, Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
+import { Howl, Howler } from 'howler';
 //File
-import Tele from "../../assets/tele.mp3";
-//icons
-import { IoIosArrowDropdown } from "react-icons/io";
+import Tele from '../../assets/tele.mp3';
 
 export default function DetailsUser() {
   // Id params
   const { id } = useParams();
-  const location = useLocation();
   // Navigate
   const navigate = useNavigate();
   // query client
@@ -50,33 +44,26 @@ export default function DetailsUser() {
   });
   // check !brand redirect
   if (!id) {
-    return <Navigate to="/staff" />;
+    return <Navigate to='/staff' />;
   }
-
   // get customer
-  const { data: customer } = useQuery(["customer", id], () => getCustomer(id), {
+  const { data: customer } = useQuery(['customer', id], () => getCustomer(id), {
     enabled: !!id,
   });
+
   // get channels
-  const { data: channels } = useQuery(["channels", brand], () =>
+  const { data: channels } = useQuery(['channels', brand], () =>
     getChannels(brand),
   );
   //get source
-  const { data: source } = useQuery(["source", brand], () => getSource(brand));
+  const { data: source } = useQuery(['source', brand], () => getSource(brand));
 
   if (customer?.status === 400) {
-    return navigate("/staff");
+    return navigate('/staff');
   }
 
   useEffect(() => {
-    if (!location.pathname.startsWith(`/staff`)) {
-      setDataAfterParse(null);
-      setDataCalled(null);
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (dataAfterParse?.Status === "Ringing") {
+    if (dataAfterParse?.Status === 'Ringing') {
       sound.play();
       Howler.volume(1);
     } else {
@@ -113,13 +100,13 @@ export default function DetailsUser() {
     setRealTime(dataAfterParse?.Data?.RealTimeCall);
     setLink(dataAfterParse?.Data?.LinkFile);
     setStatus(
-      dataAfterParse?.Status === "Ringing"
-        ? "Đang đổ chuông"
-        : dataAfterParse?.Status === "Up"
-        ? "Đang nói chuyện"
-        : dataAfterParse?.Status === "Down"
-        ? "Đã tắt máy"
-        : "",
+      dataAfterParse?.Status === 'Ringing'
+        ? 'Đang đổ chuông'
+        : dataAfterParse?.Status === 'Up'
+        ? 'Đang nói chuyện'
+        : dataAfterParse?.Status === 'Down'
+        ? 'Đã tắt máy'
+        : '',
     );
     setCode(dataAfterParse?.Key);
   }, [dataAfterParse]);
@@ -143,49 +130,67 @@ export default function DetailsUser() {
         });
     },
     onSuccess() {
-      setTotalTime("");
-      setRealTime("");
-      setLink("");
-      setCode("");
-      setNote("");
-      setStatus("");
-      setDataAfterParse("");
-      setDataCalled("");
-      toast.success("Lưu thành công");
+      setTotalTime('');
+      setRealTime('');
+      setLink('');
+      setCode('');
+      setNote('');
+      setStatus('');
+      setDataAfterParse('');
+      setDataCalled('');
+      toast('Lưu thành công', {
+        icon: '👏',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
     },
   });
   // save history function
 
   function handleSaveHistoryCall() {
     const dataPost = {
-      callNumber: dataAfterParse?.CallName || "",
+      callNumber: dataAfterParse?.CallName || '',
       receiptNumber: customer?.customer.dataUsers.phoneNumber,
-      keyRinging: dataAfterParse?.KeyRinging || "",
+      keyRinging: dataAfterParse?.KeyRinging || '',
       dateCall: Date.now(),
-      message: "test",
+      message: 'test',
       status: status,
-      totalTiemCall: +totalTime || 0,
-      realTimeCall: +realTime || 0,
-      linkFile: link || "",
-      typeCall: dataAfterParse?.Direction || "",
+      totalTiemCall: +totalTime,
+      realTimeCall: +realTime,
+      linkFile: link || '',
+      typeCall: dataAfterParse?.Direction || '',
       dataUserId: +customer?.customer.dataUsers.id,
       userId: +customer?.customer.dataUsers.userId,
       note: note,
       levelId: lvIdRef.current.value,
       rating: 5,
-      orderCode: "",
+      orderCode: '',
       campaignId: 0,
     };
+    if (!totalTime || !note || !status) {
+      toast('Không bỏ trống mục nào', {
+        icon: '👏',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
     saveHistory.mutate(dataPost);
   }
 
   const updateCustomerMutation = useMutation(updateCustomer, {
     onSuccess: () => {
-      queryClient.invalidateQueries("customers");
+      queryClient.invalidateQueries('customers');
     },
   });
   //Update
-  const handleUpdate = async (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     if (
       !firstName ||
@@ -198,7 +203,14 @@ export default function DetailsUser() {
       !lvIdRef.current?.value ||
       !scref.current?.value
     ) {
-      toast.error("Không được bỏ trống");
+      toast('Không được bỏ trống', {
+        icon: '👏',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
       return;
     }
     const data = {
@@ -215,9 +227,16 @@ export default function DetailsUser() {
       userId: +user?.Id,
       sourceDataId: +scref.current?.value,
     };
-    await updateCustomerMutation.mutateAsync({ id, data });
-    toast.success("Update thành công");
-    navigate("/staff");
+    updateCustomerMutation.mutate({ id, data });
+    toast('Cập nhật thành công', {
+      icon: '👏',
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    });
+    navigate('/staff');
   };
   //Cầm máy
   function acceptCall() {
@@ -238,31 +257,37 @@ export default function DetailsUser() {
         <div className={styles.forms}>
           <div className={styles.form1}>
             {firstName && (
-              <h6 style={{ paddingBottom: "5px" }}>
-                Khách hàng: {firstName + " " + lastName}
+              <h6 style={{ paddingBottom: '5px' }}>
+                Khách hàng: {firstName + ' ' + lastName}
               </h6>
             )}
             <h4
               style={{
-                marginTop: "20px",
-                fontSize: "14px",
-                color: "rgb(73, 163, 241)",
+                marginTop: '20px',
+                fontSize: '14px',
+                color: 'rgb(73, 163, 241)',
               }}
             >
               Máy nhánh: {user?.CFDisplay}
             </h4>
             {dataAfterParse ? (
               <div className={styles.btn__usercall}>
-                <span style={{ display: "block", color: "grey" }}>
+                <span style={{ display: 'block', color: 'grey' }}>
                   {dataAfterParse?.CallNumber}
                 </span>
-                {dataAfterParse?.Status === "Ringing" && (
-                  <Button className={styles.btn__usercal} onClick={acceptCall}>
+                {dataAfterParse?.Status === 'Ringing' && (
+                  <Button
+                    className={styles.btn__usercal}
+                    onClick={acceptCall}
+                  >
                     Nghe máy
                   </Button>
                 )}
-                {dataAfterParse?.Status === "Up" && (
-                  <Button className={styles.btn__canc} onClick={rejectCall}>
+                {dataAfterParse?.Status === 'Up' && (
+                  <Button
+                    className={styles.btn__canc}
+                    onClick={rejectCall}
+                  >
                     Tắt máy
                   </Button>
                 )}
@@ -271,12 +296,16 @@ export default function DetailsUser() {
             <form>
               <div className={styles.field}>
                 <label>Người Phụ Trách</label>
-                <Input disabled type="text" value={userName} />
+                <Input
+                  disabled
+                  type='text'
+                  value={userName}
+                />
               </div>
               <div className={styles.field}>
                 <label>Họ</label>
                 <Input
-                  type="text"
+                  type='text'
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
                 />
@@ -284,7 +313,7 @@ export default function DetailsUser() {
               <div className={styles.field}>
                 <label>Tên</label>
                 <Input
-                  type="text"
+                  type='text'
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}
                 />
@@ -292,8 +321,9 @@ export default function DetailsUser() {
               <div className={styles.field}>
                 <label>Số điện thoại</label>
                 <Input
+                  disabled
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  type="number"
+                  type='number'
                   value={phoneNumber}
                 />
               </div>
@@ -301,7 +331,7 @@ export default function DetailsUser() {
                 <label>Email</label>
                 <Input
                   onChange={(e) => setEmail(e.target.value)}
-                  type="email"
+                  type='email'
                   value={email}
                 />
               </div>
@@ -309,7 +339,7 @@ export default function DetailsUser() {
                 <label>Địa chỉ</label>
                 <Input
                   onChange={(e) => setAddress(e.target.value)}
-                  type="text"
+                  type='text'
                   value={address}
                 />
               </div>
@@ -317,11 +347,18 @@ export default function DetailsUser() {
                 <label>Level KH</label>
                 <select ref={lvIdRef}>
                   {customer?.customer?.levels &&
-                    customer?.customer?.levels.map((lv, index) => (
-                      <option key={index} value={lv.id}>
-                        {lv.name}
-                      </option>
-                    ))}
+                    customer?.customer?.levels.map((lv, index) => {
+                      if (lv?.name) {
+                        return (
+                          <option
+                            key={index}
+                            value={lv.id}
+                          >
+                            {lv.name}
+                          </option>
+                        );
+                      }
+                    })}
                 </select>
               </div>
               <div className={styles.field}>
@@ -329,7 +366,10 @@ export default function DetailsUser() {
                 <select ref={cnIdRef}>
                   {channels &&
                     channels.map((cn, index) => (
-                      <option key={index} value={cn.id}>
+                      <option
+                        key={index}
+                        value={cn.id}
+                      >
                         {cn.name}
                       </option>
                     ))}
@@ -340,7 +380,10 @@ export default function DetailsUser() {
                 <select ref={scref}>
                   {source &&
                     source.map((sc, index) => (
-                      <option value={sc.id} key={index}>
+                      <option
+                        value={sc.id}
+                        key={index}
+                      >
                         {sc.name}
                       </option>
                     ))}
@@ -349,22 +392,28 @@ export default function DetailsUser() {
               <div className={styles.field}>
                 <label>Giới tính</label>
                 <select ref={genderRef}>
-                  <option value="1">Nam</option>
-                  <option value="0">Nu</option>
+                  <option value='1'>Nam</option>
+                  <option value='0'>Nu</option>
                 </select>
               </div>
               <div className={styles.field}>
                 <label>Ngày sinh</label>
-                <Input ref={dateRef} type="date" />
+                <Input
+                  ref={dateRef}
+                  type='date'
+                />
               </div>
               <div className={styles.buttonkk}>
                 <Button
                   className={styles.btn_kk}
-                  onClick={() => navigate("/staff")}
+                  onClick={() => navigate('/staff')}
                 >
                   Quay về
                 </Button>
-                <Button className={styles.btn_kk} onClick={handleUpdate}>
+                <Button
+                  className={styles.btn_kk2}
+                  onClick={handleUpdate}
+                >
                   Cập nhật
                 </Button>
               </div>
@@ -374,19 +423,25 @@ export default function DetailsUser() {
           {/* form2 */}
           <div className={styles.form2}>
             <h6>Thông tin cuộc gọi</h6>
-            <div style={{ marginTop: "10px" }} className={styles.buttonsk}>
-              <Button
-                className={styles.btn_details}
-                onClick={() => navigate(`/staff/${id}/schedule`)}
+            <div
+              style={{ marginTop: '10px' }}
+              className={styles.buttonsk}
+            >
+              <Link
+                style={{ width: '100%' }}
+                to={`/staff/${id}/schedule`}
+                target='_blank'
               >
-                Lịch hẹn
-              </Button>
-              <Button
-                onClick={() => navigate(`/staff/${id}/order`)}
-                className={styles.btn_details}
+                <Button className={styles.btn_details}>Lịch hẹn</Button>
+              </Link>
+              <Link
+                style={{ width: '100%' }}
+                to={`/staff/${id}/order`}
+                target='_blank'
               >
-                Đặt hàng
-              </Button>
+                {' '}
+                <Button className={styles.btn_details}>Đặt hàng</Button>
+              </Link>
             </div>
             <form>
               <div className={styles.field}>
@@ -394,7 +449,7 @@ export default function DetailsUser() {
                 <Input
                   onChange={(e) => setTotalTime(e.target.value)}
                   value={totalTime}
-                  type="number"
+                  type='number'
                 />
               </div>
               <div className={styles.field}>
@@ -402,23 +457,25 @@ export default function DetailsUser() {
                 <Input
                   onChange={(e) => setStatus(e.target.value)}
                   value={status}
-                  type="text"
+                  type='text'
                 />
               </div>
               <div className={styles.field}>
                 <label>Thực gọi</label>
                 <Input
+                  disabled
                   onChange={(e) => setRealTime(e.target.value)}
                   value={realTime}
-                  type="number"
+                  type='number'
                 />
               </div>
               <div className={styles.field}>
                 <label>LinkFile</label>
                 <Input
+                  disabled
                   onChange={(e) => setLink(e.target.value)}
                   value={link}
-                  type="text"
+                  type='text'
                 />
               </div>
               <div className={styles.field}>
@@ -426,12 +483,17 @@ export default function DetailsUser() {
                 <Input
                   onChange={(e) => setCode(e.target.value)}
                   value={code}
-                  type="text"
+                  disabled
+                  type='text'
                 />
               </div>
               <div className={styles.field}>
                 <label>Thông tin cuộc gọi</label>
-                <Input onChange={(e) => setNote(e.target.value)} type="text" />
+                <Input
+                  onChange={(e) => setNote(e.target.value)}
+                  type='text'
+                  value={note}
+                />
               </div>
             </form>
             <Button
@@ -442,16 +504,8 @@ export default function DetailsUser() {
             </Button>
           </div>
         </div>
-        <div className={styles.history_details}>
-          <div className={styles.htr_order}>
-            <h6>Lịch sử hóa đơn - Tổng: 1</h6>
-            <IoIosArrowDropdown className={styles.iconh} />
-          </div>
-          <div className={styles.callphone}>
-            <h6>Ghi chú cuộc gọi - Tổng: 1</h6>
-            <IoIosArrowDropdown className={styles.iconh} />
-          </div>
-        </div>
+        {/* History order */}
+        <History />
       </div>
     </div>
   );

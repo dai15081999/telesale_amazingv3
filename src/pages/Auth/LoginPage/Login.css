@@ -1,5 +1,5 @@
 .form__login {
-  background-image: url("../../../assets/tele.jpg");
+  background-image: url('../../../assets/tele.jpg');
   background-position: center;
   background-size: cover;
   padding: 5%;
@@ -22,10 +22,8 @@
 
 .loginform {
   width: 50%;
-  height: 70%;
-  position: absolute;
-  right: 10%;
-  bottom: 5%;
+  height: 100%;
+  margin: auto;
 }
 
 .loginform h6 {
@@ -47,6 +45,7 @@
 .info {
   margin-top: 10%;
   width: 30%;
+ margin: 10% auto; 
 }
 
 .info h5 {

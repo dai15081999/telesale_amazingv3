@@ -1,7 +1,7 @@
 .brand {
   width: 100%;
   min-height: 100vh;
-  background: url("../../assets/bg.jpg");
+  background: url('../../assets/bgbrand.svg');
   display: grid;
   place-content: center;
   background-position: center;

@@ -1,46 +1,50 @@
 // Styles
-import styles from "./FormModal.module.css";
+import styles from './FormModal.module.css';
 // Icons
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose } from 'react-icons/ai';
 // Components
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
 // Context
-import { useAuth } from "../../context/AuthContext";
-import { useAxios } from "../../context/AxiosContex";
+import { useAuth } from '../../context/AuthContext';
+import { useAxios } from '../../context/AxiosContex';
 // Modules
-import { motion } from "framer-motion";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-import { useRef } from "react";
+import { motion } from 'framer-motion';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+import { useRef } from 'react';
 
 export function FormModal({ setOpenModal }) {
+  //* Query client
   const queryClient = useQueryClient();
-  //Apis link
-
+  //* Link api
   const { getSource, getChannels, getLevelUser, getcampaigns, postCustomer } =
     useAxios();
-  // Data from context
+  //* Data từ context
   const { user, brand } = useAuth();
 
-  // get levels
+  //* Lấy tất cả levels khách
   const { data: levels } = useQuery(
-    ["levels", brand],
+    ['levels', brand],
     () => getLevelUser(brand),
     {
       enabled: !!brand,
     },
   );
-  // get campaigns
-  const { data: campaigns } = useQuery(["campaigns"], getcampaigns);
-  // get source
-  const { data: source } = useQuery(["source", brand], () => getSource(brand));
-  // get channels
-  const { data: channels } = useQuery(["channels", brand], () =>
+  //* Lấy tất cả chiến dịch
+  const { data: campaigns } = useQuery(
+    ['campaigns', brand],
+    () => getcampaigns(+brand),
+    { enabled: !!brand },
+  );
+  //* Lấy source theo brand ID
+  const { data: source } = useQuery(['source', brand], () => getSource(brand));
+  //* Lấy kênh
+  const { data: channels } = useQuery(['channels', brand], () =>
     getChannels(brand),
   );
 
-  // Ref data
+  //* Ref data
   const fnRef = useRef();
   const lnRef = useRef();
   const pnRef = useRef();
@@ -53,13 +57,13 @@ export function FormModal({ setOpenModal }) {
   const sourceRef = useRef();
   const capaignRef = useRef();
 
-  // Post mutation
+  //* Mutatuion tạo khách hàng
   const postCustomerMutation = useMutation(postCustomer, {
     onSuccess: () => {
-      queryClient.invalidateQueries("customers");
+      queryClient.invalidateQueries('customers');
     },
   });
-  // Post user function
+  //* Hàm tạo khách mới
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (
@@ -75,7 +79,14 @@ export function FormModal({ setOpenModal }) {
       !sourceRef.current.value ||
       !capaignRef.current.value
     ) {
-      toast.error("KhÔng được bỏ trống mục nào");
+      toast('Không được bỏ trống', {
+        icon: '👏',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
       return;
     }
     const data = {
@@ -97,15 +108,22 @@ export function FormModal({ setOpenModal }) {
       data,
       CampaignId: capaignRef.current.value,
     });
-    toast.success("Thêm khách hàng thành công");
+    toast('Thêm khách hàng thành công', {
+      icon: '👏',
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    });
     setOpenModal(false);
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2, type: "spring", duration: 1 }}
+      initial={{ opacity: 0, transition: 0.5 }}
+      animate={{ opacity: 1, transition: 0.5 }}
+      transition={{ type: 'spring' }}
       className={styles.formmoal}
     >
       <form>
@@ -113,52 +131,77 @@ export function FormModal({ setOpenModal }) {
           <h6>Thêm khách hàng</h6>
           <AiOutlineClose
             onClick={() => setOpenModal(false)}
-            style={{ color: "grey", fontSize: "20px", cursor: "pointer" }}
+            style={{ color: 'grey', fontSize: '20px', cursor: 'pointer' }}
           />
         </div>
         <div className={styles.fields}>
           <div className={styles.field}>
             <label>Tên</label>
-            <Input ref={lnRef} type="text" />
+            <Input
+              ref={lnRef}
+              type='text'
+            />
           </div>
           <div className={styles.field}>
             <label>Họ</label>
-            <Input ref={fnRef} type="text" />
+            <Input
+              ref={fnRef}
+              type='text'
+            />
           </div>
           <div className={styles.field}>
             <label>Số điện thoại</label>
-            <Input ref={pnRef} type="text" />
+            <Input
+              ref={pnRef}
+              type='text'
+            />
           </div>
           <div className={styles.field}>
             <label>Địa chỉ</label>
-            <Input ref={arRef} type="text" />
+            <Input
+              ref={arRef}
+              type='text'
+            />
           </div>
           <div className={styles.field}>
             <label>Email</label>
-            <Input ref={emRef} type="text" />
+            <Input
+              ref={emRef}
+              type='text'
+            />
           </div>
           <div className={styles.flex}>
             <div className={styles.field}>
               <label>Sex</label>
               <select ref={genderRef}>
-                <option value="1">Nam</option>
-                <option value="0">Nữ</option>
+                <option value='1'>Nam</option>
+                <option value='0'>Nữ</option>
               </select>
             </div>
             <div className={styles.field}>
               <label>Birthday</label>
-              <Input ref={bdRef} type="date" />
+              <Input
+                ref={bdRef}
+                type='date'
+              />
             </div>
           </div>
           <div className={styles.field}>
             <label>Level</label>
             <select ref={levelRef}>
               {levels &&
-                levels.map((lv, index) => (
-                  <option key={index} value={lv.id}>
-                    {lv.name}
-                  </option>
-                ))}
+                levels.map((lv, index) => {
+                  if (lv?.name) {
+                    return (
+                      <option
+                        key={index}
+                        value={lv.id}
+                      >
+                        {lv.name}
+                      </option>
+                    );
+                  }
+                })}
             </select>
           </div>
           <div className={styles.field}>
@@ -166,7 +209,10 @@ export function FormModal({ setOpenModal }) {
             <select ref={channelRef}>
               {channels &&
                 channels.map((cn, index) => (
-                  <option key={index} value={cn.id}>
+                  <option
+                    key={index}
+                    value={cn.id}
+                  >
                     {cn.name}
                   </option>
                 ))}
@@ -177,7 +223,10 @@ export function FormModal({ setOpenModal }) {
             <select ref={sourceRef}>
               {source &&
                 source.map((sor, index) => (
-                  <option key={index} value={sor.id}>
+                  <option
+                    key={index}
+                    value={sor.id}
+                  >
                     {sor.name}
                   </option>
                 ))}
@@ -188,7 +237,10 @@ export function FormModal({ setOpenModal }) {
             <select ref={capaignRef}>
               {campaigns &&
                 campaigns.map((cp, index) => (
-                  <option key={index} value={cp.id}>
+                  <option
+                    key={index}
+                    value={cp.id}
+                  >
                     {cp.name}
                   </option>
                 ))}
@@ -197,6 +249,7 @@ export function FormModal({ setOpenModal }) {
 
           <div className={styles.buttons}>
             <Button
+              className={styles.cancelbtn}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenModal(false);
@@ -204,7 +257,12 @@ export function FormModal({ setOpenModal }) {
             >
               Hủy
             </Button>
-            <Button onClick={handleAddUser}>Thêm khách hàng</Button>
+            <Button
+              className={styles.addbtn}
+              onClick={handleAddUser}
+            >
+              Thêm khách hàng
+            </Button>
           </div>
         </div>
       </form>

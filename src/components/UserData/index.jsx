@@ -1,14 +1,14 @@
 // styles
-import styles from "./UserData.module.css";
+import styles from './UserData.module.css';
 // functions
-import { formartDate, formatNumber } from "../../utils/functions";
+import { formartDate, formatNumber } from '../../utils/functions';
 // icons
-import { FcCallback } from "react-icons/fc";
-import { CgDetailsMore } from "react-icons/cg";
+import { FcCallback } from 'react-icons/fc';
+import { CgDetailsMore } from 'react-icons/cg';
 // components
-import { Loading } from "../Loading";
+import { Loading } from '../Loading';
 // modules
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export function UserData({ handleCallToUser, groupNamed, isLoading }) {
   const navigate = useNavigate();
@@ -16,18 +16,26 @@ export function UserData({ handleCallToUser, groupNamed, isLoading }) {
     <>
       {isLoading ? (
         <div className={styles.loading__tb}>
-          <Loading size="90" color="red" />
+          <Loading
+            size='90'
+            color='red'
+          />
         </div>
       ) : (
         <>
           <div className={styles.head_new}>
-            <span>STT</span>
+            <span className={styles.col1}>STT</span>
             <span>Tên</span>
             <span>Số điện thoại</span>
-            <span>Ngày tham gia</span>
-            <span style={{ textAlign: "center" }}>Nhân viên quản lý</span>
-            <span style={{ textAlign: "center" }}>Gọi</span>
-            <span style={{ textAlign: "center" }}>Xem chi tiết</span>
+            <span className={styles.col2}>Ngày tham gia</span>
+            <span
+              className={styles.col3}
+              style={{ textAlign: 'center' }}
+            >
+              Nhân viên quản lý
+            </span>
+            <span style={{ textAlign: 'center' }}>Gọi</span>
+            <span style={{ textAlign: 'center' }}>Xem chi tiết</span>
           </div>
           {/* render user */}
           <div className={styles.content__xx}>
@@ -47,15 +55,30 @@ export function UserData({ handleCallToUser, groupNamed, isLoading }) {
                 <div key={index}>
                   <h5>{elm.key}</h5>
                   {elm.value.map((rl, index) => (
-                    <div key={index} className={styles.content_new}>
-                      <span style={{ color: "grey" }}>{index + 1}</span>
+                    <div
+                      key={index}
+                      className={styles.content_new}
+                    >
+                      <span
+                        className={styles.col1}
+                        style={{ color: 'grey' }}
+                      >
+                        {index + 1}
+                      </span>
                       <span>{rl.lastName}</span>
                       <span>{formatNumber(rl.phoneNumber)}</span>
-                      <span>{formartDate(rl.dateCreated, "full")}</span>
-                      <span style={{ textAlign: "center" }}>{rl.userName}</span>
+                      <span className={styles.col2}>
+                        {formartDate(rl.dateCreated, 'full')}
+                      </span>
+                      <span
+                        className={styles.col3}
+                        style={{ textAlign: 'center' }}
+                      >
+                        {rl.userName}
+                      </span>
                       <span
                         className={styles.call}
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                       >
                         <FcCallback
                           onClick={() =>
@@ -65,17 +88,17 @@ export function UserData({ handleCallToUser, groupNamed, isLoading }) {
                             })
                           }
                           className={styles.btn__C}
-                          style={{ fontSize: "20px" }}
+                          style={{ fontSize: '20px' }}
                         />
                       </span>
                       <span
                         className={styles.call}
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => navigate(`/staff/${rl.id}`)}
                       >
                         <CgDetailsMore
                           className={styles.btn__C}
-                          style={{ fontSize: "20px" }}
+                          style={{ fontSize: '20px' }}
                         />
                       </span>
                     </div>

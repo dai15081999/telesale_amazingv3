@@ -1,30 +1,32 @@
-
 // icons
-import { AiOutlinePlus } from "react-icons/ai";
-import { CiSquareRemove } from "react-icons/ci";
+import { AiOutlinePlus } from 'react-icons/ai';
+import { CiSquareRemove } from 'react-icons/ci';
 // styles
-import "./Orderx.styles.css";
+import './Orderx.styles.css';
 // modules
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { useEffect, useMemo, useState, useRef } from 'react';
 // context
-import { useAxios } from "../../../context/AxiosContex";
+import { useAxios } from '../../../context/AxiosContex';
 //functions
-import { formatMoney } from "../../../utils/functions";
-
+import { formatMoney } from '../../../utils/functions';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function Order() {
-  const { getAllProducts, getCustomer, saveProducts } = useAxios();
+  const { getAllProducts, getCustomer, saveProducts, saveProductsToOrder } =
+    useAxios();
   const { id } = useParams();
   const [prod, setProd] = useState([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
   const noteRef = useRef();
 
   //get all products
-  const { data: products } = useQuery(["products"], getAllProducts);
-  const { data: customer } = useQuery(["customer", id], () => getCustomer(id), {
+  const { data: products } = useQuery(['products'], getAllProducts);
+  const { data: customer } = useQuery(['customer', id], () => getCustomer(id), {
     enabled: !!id,
   });
 
@@ -70,62 +72,106 @@ function Order() {
       }, []),
     );
   };
-
+  const postProductToOrder = useMutation({
+    mutationFn: (data) => {
+      return saveProductsToOrder(data).then((res) => {
+        return res;
+      });
+    },
+    onSuccess(data2) {
+      if (data2?.status === 'Success') {
+        toast('Đặt hàng thành công', {
+          icon: '👏',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        });
+        navigate(`/staff/${id}`);
+      }
+    },
+  });
+  let dataPostOrder = [];
   const postProduct = useMutation({
     mutationFn: (data) => {
       return saveProducts(data).then((res) => {
         return res;
       });
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess(data2) {
+      if (data2?.status === 'Success') {
+        items?.forEach((elm) => {
+          dataPostOrder.push({
+            productId: elm?.id,
+            quantity: elm?.amount,
+            price: elm?.price,
+            orderId: data2?.order,
+          });
+        });
+        postProductToOrder.mutate(dataPostOrder);
+      }
     },
   });
+
   function handlePostProduct() {
     const data = {
-      userId: customer?.customer.dataUsers.userId,
-      dataUserId: customer?.customer.dataUsers.id,
-      status: customer?.customer.dataUsers.status,
-      note: noteRef.current.value || "",
-      amount: calculateTotal(items),
-      levelId: customer?.customer.dataUsers.levelId,
-      brandId: customer?.customer.dataUsers.brandId,
+      userId: +customer?.customer.dataUsers.userId,
+      dataUserId: +customer?.customer.dataUsers.id,
+      status: +customer?.customer.dataUsers.status,
+      note: noteRef.current.value || '',
+      amount: +calculateTotal(items),
+      levelId: +customer?.customer.dataUsers.levelId,
+      brandId: +customer?.customer.dataUsers.brandId,
       code: customer?.customer.dataUsers.code,
-      expectedDate: Date.now().toString(),
-      storeId: 1,
-      campaignId: customer?.customer.campaigns[0].campaignId,
+      expectedDate: new Date(),
+      storeId: 13,
+      campaignId: 8,
     };
-
-    console.log(data);
+    if (!noteRef.current.value) {
+      toast('Không được bỏ trống mục nào', {
+        icon: '👏',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
     postProduct.mutate(data);
   }
+
   return (
     <>
-      <div className="wrapper1">
-        <div className="container">
-          <div className="form1">
+      <div className='wrapper1'>
+        <div className='container'>
+          <div className='form1'>
             <h5>Danh sách Sản phẩm/Dịch vụ</h5>
             <input
               onChange={(e) => setQuery(e.target.value)}
-              type="text"
-              placeholder="Tìm kiếm..."
+              type='text'
+              placeholder='Tìm kiếm...'
             />
             <ul>
-              <div className="head">
+              <div className='head'>
                 <li>STT</li>
                 <li>Sản phẩm</li>
                 <li>Tổng tiền</li>
                 <li>Thêm</li>
               </div>
-              <div className="contents">
+              <div className='contents'>
                 {filterPro?.map((prd, index) => (
-                  <div key={prd.id} className="content">
+                  <div
+                    key={prd.id}
+                    className='content'
+                  >
                     <li>{index + 1}</li>
                     <li>{prd.name}</li>
                     <li>{formatMoney(prd.price)}</li>
                     <li onClick={() => handleAddToCart(prd)}>
                       <AiOutlinePlus
-                        style={{ cursor: "pointer", fontSize: "18px" }}
+                        style={{ cursor: 'pointer', fontSize: '18px' }}
                       />
                     </li>
                   </div>
@@ -133,17 +179,17 @@ function Order() {
               </div>
             </ul>
           </div>
-          <div className="form2">
-            <div className="head_form2">
+          <div className='form2'>
+            <div className='head_form2'>
               <h5>Thông tin khách hàng</h5>
               <button onClick={handlePostProduct}>Đặt mua</button>
             </div>
-            <div className="form2_input">
+            <div className='form2_input'>
               <div>
                 <label>Khách Hàng</label>
                 <input
                   disabled
-                  type="text"
+                  type='text'
                   value={
                     customer &&
                     `${customer?.customer.dataUsers.lastName} ${customer?.customer.dataUsers.firstName}`
@@ -154,7 +200,7 @@ function Order() {
                 <label>Số điện thoại</label>
                 <input
                   disabled
-                  type="text"
+                  type='text'
                   value={customer && customer?.customer.dataUsers.phoneNumber}
                 />
               </div>
@@ -162,46 +208,56 @@ function Order() {
                 <label>Địa chỉ</label>
                 <input
                   disabled
-                  type="text"
+                  type='text'
                   value={customer && customer?.customer.dataUsers.address}
                 />
               </div>
               <div>
                 <label>Thành tiền</label>
                 <input
-                  type="text"
+                  type='text'
                   value={formatMoney(calculateTotal(items))}
                   disabled
                 />
               </div>
               <div>
                 <label>Ghi chú</label>
-                <input ref={noteRef} type="text" />
+                <input
+                  ref={noteRef}
+                  type='text'
+                />
               </div>
             </div>
           </div>
-          <div className="form3">
+          <div className='form3'>
             <h5>Hóa đơn</h5>
             <ul>
-              <div className="head">
+              <div className='head'>
                 <li>STT</li>
                 <li>Sản phẩm</li>
                 <li>Tổng tiền</li>
                 <li>Quantity</li>
                 <li>Xóa</li>
               </div>
-              <div className="contents">
+              <div className='contents'>
                 {items.map((it, id) => (
-                  <div key={id} className="content">
+                  <div
+                    key={id}
+                    className='content'
+                  >
                     <li>{id + 1}</li>
                     <li>{it.name}</li>
                     <li>{formatMoney(it.price)}</li>
                     <li>
-                      <input type="text" disabled value={it?.amount} />
+                      <input
+                        type='text'
+                        disabled
+                        value={it?.amount}
+                      />
                     </li>
                     <li onClick={() => handleRemoveFromCart(it.id)}>
                       <CiSquareRemove
-                        style={{ cursor: "pointer", fontSize: "19px" }}
+                        style={{ cursor: 'pointer', fontSize: '19px' }}
                       />
                     </li>
                   </div>

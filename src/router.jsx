@@ -1,41 +1,51 @@
 //! modules
-import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { Toaster } from "react-hot-toast";
+import { createBrowserRouter, Outlet, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 //Components
-import LoginPage from "./pages/Auth/LoginPage";
-import SignupPage from "./pages/Auth/SignupPage";
-const SupperAdmin = lazy(() => import("./pages/SupperAdmin"));
-const Admin = lazy(() => import("./pages/Admin"));
-const Brand = lazy(() => import("./pages/Brand"));
-const DetailsUser = lazy(() => import("./pages/DetailsUser"));
-const Order = lazy(() => import("./pages/DetailsUser/Order"));
-const Schedule = lazy(() => import("./pages/DetailsUser/Schedule"));
-const StaffManager = lazy(() => import("./pages/Staff/PageStaff/StaffManager"));
-const Calendar = lazy(() => import("./pages/Staff/PageStaff/Calendar"));
-const CallReport = lazy(() => import("./pages/Staff/PageStaff/CallReport"));
-const Campaign = lazy(() => import("./pages/Staff/PageStaff/Campaign"));
-const NewsBoard = lazy(() => import("./pages/Staff/PageStaff/NewsBoard"));
-const OrderReport = lazy(() => import("./pages/Staff/PageStaff/OrderReport"));
+import LoginPage from './pages/Auth/LoginPage';
+import SignupPage from './pages/Auth/SignupPage';
+const BrandManagement = lazy(() =>
+  import('./pages/Admin/RightAdmin/BrandManagement'),
+);
+const Configuration = lazy(() =>
+  import('./pages/Admin/RightAdmin/Configuration'),
+);
+const UserManagement = lazy(() =>
+  import('./pages/Admin/RightAdmin/UserManagement'),
+);
+const WorkflowManagement = lazy(() =>
+  import('./pages/Admin/RightAdmin/WorkflowManagement'),
+);
+const Brand = lazy(() => import('./pages/Brand'));
+const DetailsUser = lazy(() => import('./pages/DetailsUser'));
+const Order = lazy(() => import('./pages/DetailsUser/Order'));
+const Schedule = lazy(() => import('./pages/DetailsUser/Schedule'));
+const StaffManager = lazy(() => import('./pages/Staff/PageStaff/StaffManager'));
+const Calendar = lazy(() => import('./pages/Staff/PageStaff/Calendar'));
+const CallReport = lazy(() => import('./pages/Staff/PageStaff/CallReport'));
+const Campaign = lazy(() => import('./pages/Staff/PageStaff/Campaign'));
+const NewsBoard = lazy(() => import('./pages/Staff/PageStaff/NewsBoard'));
+const OrderReport = lazy(() => import('./pages/Staff/PageStaff/OrderReport'));
 
 const CampaignReport = lazy(() =>
-  import("./pages/Staff/PageStaff/CampaignReport"),
+  import('./pages/Staff/PageStaff/CampaignReport'),
 );
-
 //Layouts
-import { RootLayout } from "./layouts/RootLayout";
-import { AuthLayout } from "./layouts/AuthLayout";
-import { AuthProvider } from "./context/AuthContext";
-import { SipProvider } from "./context/SipContext";
-import AxiosProvider from "./context/AxiosContex";
-import LoadingLazy from "./components/LoadingLazy";
+import { RootLayout } from './layouts/RootLayout';
+import { AuthLayout } from './layouts/AuthLayout';
+import { AuthProvider } from './context/AuthContext';
+import { SipProvider } from './context/SipContext';
+import AxiosProvider from './context/AxiosContex';
+import LoadingLazy from './components/LoadingLazy';
+import { AdminLayout } from './layouts/AdminLayout';
 
 export const router = createBrowserRouter([
   {
     element: <ContextWrapper />,
     children: [
       {
-        path: "/brand",
+        path: '/brand',
         element: (
           <Suspense fallback={<LoadingLazy />}>
             <Brand />
@@ -45,9 +55,17 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [
-          { path: "*", element: <Navigate to="/login" replace /> },
           {
-            path: "/staff",
+            path: '*',
+            element: (
+              <Navigate
+                to='/staff'
+                replace
+              />
+            ),
+          },
+          {
+            path: '/staff',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <StaffManager />
@@ -55,7 +73,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/lich",
+            path: '/lich',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <Calendar />
@@ -63,7 +81,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/chien-dich",
+            path: '/chien-dich',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <Campaign />
@@ -71,7 +89,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/new-board",
+            path: '/new-board',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <NewsBoard />
@@ -79,7 +97,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/call-report",
+            path: '/call-report',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <CallReport />
@@ -87,7 +105,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/order-report",
+            path: '/order-report',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <OrderReport />
@@ -95,7 +113,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/campaign-report",
+            path: '/campaign-report',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <CampaignReport />
@@ -103,23 +121,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/admin",
-            element: (
-              <Suspense fallback={<LoadingLazy />}>
-                <Admin />
-              </Suspense>
-            ),
-          },
-          {
-            path: "/manager",
-            element: (
-              <Suspense fallback={<LoadingLazy />}>
-                <SupperAdmin />
-              </Suspense>
-            ),
-          },
-          {
-            path: "/staff/:id",
+            path: '/staff/:id',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <DetailsUser />
@@ -127,7 +129,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/staff/:id/order",
+            path: '/staff/:id/order',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <Order />
@@ -135,7 +137,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/staff/:id/schedule",
+            path: '/staff/:id/schedule',
             element: (
               <Suspense fallback={<LoadingLazy />}>
                 <Schedule />
@@ -145,10 +147,65 @@ export const router = createBrowserRouter([
         ],
       },
       {
+        element: <AdminLayout />,
+        children: [
+          {
+            path: '*',
+            element: (
+              <Navigate
+                to='/admin'
+                replace
+              />
+            ),
+          },
+          {
+            path: '/admin',
+            element: (
+              <Suspense fallback={<LoadingLazy />}>
+                <BrandManagement />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/admin-manager-user',
+            element: (
+              <Suspense fallback={<LoadingLazy />}>
+                <UserManagement />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/admin-manager-work',
+            element: (
+              <Suspense fallback={<LoadingLazy />}>
+                <WorkflowManagement />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/admin-manager-config',
+            element: (
+              <Suspense fallback={<LoadingLazy />}>
+                <Configuration />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
         element: <AuthLayout />,
         children: [
-          { path: "login", element: <LoginPage /> },
-          { path: "signup", element: <SignupPage /> },
+          {
+            path: '*',
+            element: (
+              <Navigate
+                to='/login'
+                replace
+              />
+            ),
+          },
+          { path: 'login', element: <LoginPage /> },
+          { path: 'signup', element: <SignupPage /> },
         ],
       },
     ],
@@ -161,7 +218,10 @@ function ContextWrapper() {
     <AxiosProvider>
       <AuthProvider>
         <SipProvider>
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster
+            position='bottom-right'
+            reverseOrder={true}
+          />
           <Outlet />
         </SipProvider>
       </AuthProvider>

@@ -1,0 +1,199 @@
+.history_details {
+  width: 100%;
+  padding: 10px;
+  margin: 5px auto 0 auto;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.history_details .htr_order {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  padding: 14px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.head_detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid var(--dark-grey);
+  padding: 10px;
+}
+
+.content_dt {
+  padding: 10px;
+}
+
+.content_dt h5 {
+  color: var(--dark-grey);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.all_order::-webkit-scrollbar {
+  width: 10px;
+}
+.all_order::-webkit-scrollbar-thumb {
+  background-color: var(--blue);
+}
+.all_order {
+  overflow-y: scroll;
+}
+
+.content_dt table {
+  width: 100%;
+}
+
+.content_dt table,
+td,
+th {
+  border: 1px solid var(--dark-grey);
+  text-align: left;
+  border-collapse: collapse;
+}
+.content_dt th,
+td {
+  padding: 8px;
+}
+
+.content_dt th {
+  font-size: 13px;
+  font-weight: 400;
+  font-weight: bold;
+}
+.content_dt span {
+  font-size: 13px;
+  margin: 5px 0;
+  color: var(--dark-grey);
+}
+
+.total_price {
+  margin-top: 7px;
+  text-align: right;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--dark-grey);
+}
+
+.total_price strong {
+  color: var(--red);
+}
+
+.history_details .callphone {
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  width: 100%;
+}
+
+.all__history {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.historyCall {
+  padding: 7px;
+  border-bottom: 1px solid var(--dark-grey);
+}
+.historyCall h5 {
+  color: var(--dark-grey);
+  font-size: 15px;
+}
+
+.historyCall .date__history {
+  color: var(--blue);
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.historyCall .status_history {
+  display: flex;
+  font-size: 13px;
+  color: var(--dark-grey);
+}
+
+.history_details h6 {
+  color: var(--dark);
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.history_details .total__time {
+  font-size: 13px;
+  color: var(--red);
+}
+
+.file__record {
+  display: flex;
+  align-items: center;
+}
+
+.iconh {
+  width: 120px;
+  background-color: var(--green);
+  text-align: center;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 900px) {
+  .history_details {
+    width: 100%;
+  }
+  .history_details h6 {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .history_details {
+    width: 100%;
+    margin: auto;
+    border-radius: 10px;
+    flex-direction: column;
+  }
+  .history_details .htr_order {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    padding: 4px;
+    border-radius: 5px;
+    width: 100%;
+  }
+
+  .callphone {
+    width: 100%;
+  }
+  .file__record {
+    flex-direction: column;
+  }
+  .file_title {
+    font-size: 13px;
+  }
+  .content_dt table {
+    width: 90%;
+  }
+
+  .content_dt table,
+  td,
+  th {
+    border: 1px solid var(--dark-grey);
+    text-align: left;
+    border-collapse: collapse;
+  }
+  .content_dt th,
+  td {
+    padding: 3px;
+  }
+
+  .content_dt th {
+    font-size: 11px;
+    font-weight: 300;
+  }
+}
